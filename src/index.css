@@ -1,0 +1,18 @@
+:root {
+    --dark-gray: #282a2d;
+    --light-gray: #ffffffcc;
+    --black: #000;
+    --white: #fff;
+    --yellow: #e5a00d;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: "IBM Plex Sans Condensed", sans-serif;;
+}
+
+body {
+    background-color: var(--dark-gray);
+    color: var(--white);
+}
