@@ -3,7 +3,7 @@ import { IoIosSearch } from "react-icons/io";
 import { testData } from '../../../assets/data/test-data';
 import './searchbar.component.css';
 
-export default function Searchbar() {
+const Searchbar = () => {
   const [search, setSearch] = useState('');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -26,3 +26,5 @@ export default function Searchbar() {
     </div>
   )
 }
+
+export default Searchbar;
