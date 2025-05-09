@@ -8,7 +8,7 @@ export default function Searchbar() {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-    console.log(testData.filter(movie => movie.titleText.text.toLowerCase().includes(e.target.value.toLowerCase())));
+    console.log(testData.results.filter(movie => movie.titleText.text.toLowerCase().includes(e.target.value.toLowerCase())));
   }
 
   const handleSearch = () => {}
