@@ -1,6 +1,8 @@
 .page-body {
     display: grid;
     grid-template-columns: 17% 83%;
+    height: 91vh;
+    overflow: hidden;
 }
 
 .main-header {
@@ -14,6 +16,7 @@
     flex-direction: column;
     align-items: center;
     gap: 2rem;
+    overflow-y: scroll;
 }
 
 .movies-grid {
