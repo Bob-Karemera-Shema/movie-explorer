@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { IMovie } from '../../types/types';
+import type { IMovie } from '../../utils/types';
 import placeholder from '../../assets/placeholder.jpg';
 import './moviecard.component.css';
 

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Navbar from './components/navbar/navbar.component';
 import Sidebar from './components/sidebar/sidebar.component';
 import MovieCard from './components/moviecard/moviecard.component';
@@ -6,13 +7,19 @@ import { testData } from './assets/data/test-data';
 import './App.css';
 
 export default function App() {
+  const [currentGenre, setCurrentGenre] = useState('Popular');
+
+  const onGenreChange = (selectedGenre: string) => setCurrentGenre(selectedGenre);
+
   return (
     <>
       <Navbar />
       <div className='page-body'>
-        <Sidebar />
+        <Sidebar onGenreChange={onGenreChange} />
         <div className="movies-section">
-          <h1 className='main-header'>Movie Catalog</h1>
+          <div className='header'>
+            <h1>{currentGenre}</h1>
+          </div>
           <div className="movies-grid">
             {
               testData.results.map((movie) => <MovieCard key={movie.id} movie={movie} />)

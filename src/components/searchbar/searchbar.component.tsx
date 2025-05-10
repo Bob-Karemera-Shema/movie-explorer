@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent } from 'react';
 import { IoIosSearch } from "react-icons/io";
-import { testData } from '../../../assets/data/test-data';
+import { testData } from '../../assets/data/test-data';
 import './searchbar.component.css';
 
 const Searchbar = () => {

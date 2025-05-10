@@ -1,3 +1,24 @@
+:root {
+    --dark-gray: #282a2d;
+    --light-gray: #ffffffcc;
+    --caption-color: #ffffff99;
+    --hover-color: #575b61;
+    --black: #000;
+    --white: #fff;
+    --yellow: #e5a00d;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: "IBM Plex Sans Condensed", sans-serif;;
+}
+
+body {
+    background-color: var(--dark-gray);
+    color: var(--white);
+}
+
 .page-body {
     display: grid;
     grid-template-columns: 17% 83%;
@@ -5,9 +26,14 @@
     overflow: hidden;
 }
 
-.main-header {
-    font-weight: 900;
+.header {
+    width: 100%;
     padding-top: 5px;
+    padding-left: 2rem;
+}
+
+.header h1 {
+    font-weight: 900;
 }
 
 .movies-section {

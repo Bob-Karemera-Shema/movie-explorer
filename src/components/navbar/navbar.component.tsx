@@ -1,4 +1,4 @@
-import Searchbar from './searchbar/searchbar.component';
+import Searchbar from '../searchbar/searchbar.component';
 import './navbar.component.css';
 
 const Navbar = () => {
