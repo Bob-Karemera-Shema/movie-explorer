@@ -1,5 +1,5 @@
 export default async function customFetch(endpoint: string = '') {
-    const url = `https://moviesdatabase.p.rapidapi.com/titles${endpoint}`;
+    const url = `https://moviesdatabase.p.rapidapi.com${endpoint}`;
     const options = {
         method: 'GET',
         headers: {

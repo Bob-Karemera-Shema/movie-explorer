@@ -13,9 +13,8 @@ export default function App() {
 
   const onGenreChange = (selectedGenre: string) => setCurrentGenre(selectedGenre);
 
-  const fetchNewPage = async (page: number) => {
-    const endpoint = `?page=${page}`;
-    const newPageData = await customFetch(endpoint);
+  const goToPage = async (page: string) => {
+    const newPageData = await customFetch(page);
     movies.updateData(newPageData);
   }
 
@@ -23,13 +22,11 @@ export default function App() {
     const direction = e.currentTarget.dataset.direction;
     const currentPage = movies.data.page;
     
-    if(direction === 'prev') {
-      if(currentPage === 1) return;
-      fetchNewPage(currentPage - 1);
+    if(direction === 'prev' && movies.data.prev && currentPage > 1) {
+      goToPage(movies.data.prev);
     }
     if(direction === 'next') {
-      if(!movies.data.next) return;
-      fetchNewPage(currentPage + 1);
+      goToPage(movies.data.next);
     }
   }
 

@@ -8,7 +8,7 @@ const GenreProvider: FC<PropsWithChildren> = ({children}) => {
 
   useEffect(() => {
     async function getGenres() {
-      const response: IGenreApiResponse | undefined = await customFetch('/utils/genres');
+      const response: IGenreApiResponse | undefined = await customFetch('/titles/utils/genres');
       if(response?.results) setGenres(response.results);
     }
 
