@@ -38,15 +38,24 @@ export interface IMovie {
     year: number;
     __typename: string;
   } | null;
-  rating: {
+  rating?: {
+    tconst: string;
     averageRating: number;
     numVotes: number;
-  };
+  }
 }
-
 export interface IMovieApiResponse {
   page: number;
   next: string;
   entries: number;
   results: IMovie[];
+}
+
+export interface IGenreApiResponse {
+  results: string[];
+}
+
+export interface IMovieContext {
+  data: IMovieApiResponse;
+  updateData: (newData: IMovieApiResponse) => void;
 }

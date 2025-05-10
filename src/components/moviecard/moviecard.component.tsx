@@ -16,7 +16,7 @@ const MovieCard: React.FC<MovieCardProps> = ({movie}) => {
       <div className="movie-info-container">
         <p className='movie-name'>{movie.originalTitleText.text}</p>
         <p className='movie-extra-details'>{movie.releaseYear.year}</p>
-        <p className='movie-extra-details'>Rating: {movie.rating.averageRating}/5 ({movie.rating.numVotes})</p>
+        <p className='movie-extra-details'>Rating: {movie.rating?.averageRating}/5</p>
       </div>
     </div>
   )

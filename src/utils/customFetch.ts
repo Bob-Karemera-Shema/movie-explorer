@@ -1,4 +1,4 @@
-export default async function customFetch(endpoint: string) {
+export default async function customFetch(endpoint: string = '') {
     const url = `https://moviesdatabase.p.rapidapi.com/titles${endpoint}`;
     const options = {
         method: 'GET',
@@ -10,9 +10,7 @@ export default async function customFetch(endpoint: string) {
 
     try {
         const response = await fetch(url, options);
-        const result = await response.json();
-        console.log(result);
-        return result;
+        return await response.json();
     } catch (error) {
         console.error(error);
     }

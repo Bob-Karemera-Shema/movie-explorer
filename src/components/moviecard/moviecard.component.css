@@ -29,6 +29,10 @@
     transition: scale 0.1s ease-in-out;
 }
 
+.movie-info-container {
+    padding-left: 10px;
+}
+
 .movie-name {
     font-size: 0.875rem;
     font-weight: 500;
@@ -36,7 +40,7 @@
 }
 
 .movie-extra-details {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 600;
     line-height: 1rem;
     color: var(--caption-color);
