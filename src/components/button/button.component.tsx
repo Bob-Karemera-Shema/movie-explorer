@@ -1,9 +1,11 @@
-import type { PropsWithChildren } from 'react'
+import type { ButtonHTMLAttributes, PropsWithChildren } from 'react'
 import './button.component.css'
 
-const Button: React.FC<PropsWithChildren> = ({children}) => {
+type ButtonProps = PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>;
+
+const Button: React.FC<ButtonProps> = ({children, ...props}) => {
   return (
-    <button className='button'>
+    <button className='button' {...props}>
         {children}
     </button>
   )

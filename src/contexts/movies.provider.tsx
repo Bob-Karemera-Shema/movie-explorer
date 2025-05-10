@@ -36,8 +36,6 @@ const MoviesProvider: FC<PropsWithChildren> = ({ children }) => {
 
     const updateData = (newData: IMovieApiResponse) => setData(newData);
 
-    console.log(data);
-
     const value = { data, updateData };
 
     return (
