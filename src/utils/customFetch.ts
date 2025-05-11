@@ -8,10 +8,12 @@ export default async function customFetch(endpoint: string = '') {
         }
     };
 
-    try {
-        const response = await fetch(url, options);
-        return await response.json();
-    } catch (error) {
-        console.error(error);
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+        const error = await response.text();
+        throw new Error(`Fetch failed: ${error}`);
     }
+    
+    return await response.json();
 }

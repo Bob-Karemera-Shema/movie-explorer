@@ -32,24 +32,46 @@ const MoviesProvider: FC<PropsWithChildren> = ({ children }) => {
         entries: 0,
         results: []
     });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const startLoadingState = () => setLoading(true);
 
     const updateData = async (newData: IMovieApiResponse) => {
-        const resultsWithRatings = await Promise.all(getMovieRatings(newData.results));
-        const prev = getPrevPage(newData.next, newData.page);
+        setLoading(true);
+        setError(null);
 
-        setData({
-            ...newData,
-            prev,
-            results: resultsWithRatings
-        })
+        try {
+            const resultsWithRatings = await Promise.all(getMovieRatings(newData.results));
+            const prev = getPrevPage(newData.next, newData.page);
+
+            setData({
+                ...newData,
+                prev,
+                results: resultsWithRatings
+            });
+        } catch (error: unknown) {
+            setError(error instanceof Error ? error.message : 'An unknown error occured');
+        } finally {
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
         const getInitialMovies = async () => {
-            const response: IMovieApiResponse | undefined = await customFetch('/titles');
-            if (response) {
-                updateData(response);
-            };
+            setLoading(true);
+            setError(null);
+
+            try {
+                const response: IMovieApiResponse | undefined = await customFetch('/titles');
+                if (response) {
+                    updateData(response);
+                };
+            } catch (error: unknown) {
+                setError(error instanceof Error ? error.message : 'An unknown error occured');
+            } finally {
+                setLoading(false);
+            }
         }
 
         getInitialMovies();
@@ -57,7 +79,7 @@ const MoviesProvider: FC<PropsWithChildren> = ({ children }) => {
 
     console.log(data);
 
-    const value = { data, updateData };
+    const value = { data, loading, error, updateData, startLoadingState };
 
     return (
         <MoviesContext.Provider value={value}>

@@ -21,6 +21,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onGenreChange }) => {
         const selectedGenre = index === 0 ? 'All' : genres[index];
         const url = index === 0 ? '/titles' : `/titles?genre=${genres[index]}`;
 
+        movies.startLoadingState();
         onGenreChange(selectedGenre);
         const genreMovies = await customFetch(url);
         movies.updateData(genreMovies);

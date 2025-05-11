@@ -11,6 +11,7 @@ const Searchbar = () => {
 
   const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    movies.startLoadingState();
     const searchData = await customFetch(`/titles/search/title/${title}?exact=false&titleType=movie`);
     movies.updateData(searchData);
   }

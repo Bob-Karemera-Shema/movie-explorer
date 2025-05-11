@@ -19,6 +19,11 @@ body {
     color: var(--white);
 }
 
+.feedback-container {
+    position: relative;
+    height: 90vh;
+}
+
 .page-body {
     display: grid;
     grid-template-columns: 17% 83%;

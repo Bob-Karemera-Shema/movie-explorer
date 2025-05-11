@@ -58,5 +58,8 @@ export interface IGenreApiResponse {
 
 export interface IMovieContext {
   data: IMovieApiResponse;
+  loading: boolean;
+  error: string | null;
   updateData: (newData: IMovieApiResponse) => void;
+  startLoadingState: () => void;
 }

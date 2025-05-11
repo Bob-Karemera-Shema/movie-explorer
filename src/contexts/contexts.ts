@@ -8,7 +8,10 @@ export const MoviesContext = createContext<IMovieContext>({
         entries: 0,
         results: [],
     },
-    updateData: () => {}
+    loading: false,
+    error: null,
+    updateData: () => {},
+    startLoadingState: () => {}
 });
 
 export const GenreContext = createContext<string[]>([]);
