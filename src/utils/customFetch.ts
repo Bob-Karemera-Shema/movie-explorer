@@ -12,7 +12,7 @@ export default async function customFetch(endpoint: string = '') {
 
     if (!response.ok) {
         const error = await response.json();
-        throw new Error(`Fetch failed: ${error.message}`);
+        throw new Error(`Fetch failed: ${error}`);
     }
     
     return await response.json();
