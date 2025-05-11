@@ -48,7 +48,7 @@ export default function App() {
 
       {
         movies.error && (
-          <div className='feedback-container'>
+          <div className='error-container'>
             <p>{movies.error}</p>
           </div>
         )

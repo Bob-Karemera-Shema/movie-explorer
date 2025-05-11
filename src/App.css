@@ -26,6 +26,14 @@ body {
     height: 90vh;
 }
 
+.error-container {
+    width: 100vw;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .page-body {
     display: grid;
     grid-template-columns: 17% 83%;

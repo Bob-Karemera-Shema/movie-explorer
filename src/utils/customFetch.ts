@@ -11,8 +11,8 @@ export default async function customFetch(endpoint: string = '') {
     const response = await fetch(url, options);
 
     if (!response.ok) {
-        const error = await response.text();
-        throw new Error(`Fetch failed: ${error}`);
+        const error = await response.json();
+        throw new Error(`Fetch failed: ${error.message}`);
     }
     
     return await response.json();
