@@ -1,3 +1,7 @@
+.sidebar-overlay {
+    display: none;
+}
+
 .sidebar {
     background-color: var(--black);
     padding: 32px;
@@ -18,4 +22,36 @@
 
 .filter:hover {
     border-color: var(--white);
+}
+
+.no-scroll {
+    overflow: hidden;
+}
+
+@media screen and (max-width: 840px) {
+    .sidebar-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 998;
+        display: block;
+    }
+
+    .sidebar {
+        position: absolute;
+        width: 200px;
+        height: 100vh;
+        top: 0;
+        left: -100%;
+        transition: left 0.3s ease-in-out;
+        z-index: 999;
+        overflow-y: scroll;
+    }
+
+    .sidebar.open {
+        left: 0;
+    }
 }

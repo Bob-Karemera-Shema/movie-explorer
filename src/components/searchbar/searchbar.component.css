@@ -6,9 +6,9 @@
     gap: 5px;
 }
 
-.serchbar-input,
-.searchbar-select {
+.serchbar-input {
     height: 100%;
+    width: 400px;
     padding: 7px 10px;
     border: none;
     outline: none;
@@ -18,10 +18,8 @@
     font-size: 16px;
 }
 
-.serchbar-input {
-    width: 400px;
-}
-
-.searchbar-select {
-    width: 150px;
+@media screen and (max-width: 480px) {
+    .searchbar-container {
+        width: 100%;
+    }
 }

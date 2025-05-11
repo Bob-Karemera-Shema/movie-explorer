@@ -13,6 +13,9 @@ import './App.css';
 export default function App() {
   const movies = useContext(MoviesContext);
   const [currentGenre, setCurrentGenre] = useState('Popular');
+  const [isOpen, setIsOpen] = useState(true);
+  
+    const toggle = () => setIsOpen(prev => !prev);
 
   const onGenreChange = (selectedGenre: string) => setCurrentGenre(selectedGenre);
 
@@ -57,7 +60,7 @@ export default function App() {
       {
         !movies.loading && !movies.error && (
           <div className='page-body'>
-            <Sidebar onGenreChange={onGenreChange} />
+            <Sidebar onGenreChange={onGenreChange} isOpen={isOpen} toggle={toggle} />
             <div className="movies-section">
               <div className='header'>
                 <h1>{currentGenre}</h1>

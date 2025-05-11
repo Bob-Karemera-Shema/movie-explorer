@@ -64,3 +64,19 @@ body {
     align-items: center;
     gap: 10px;
 }
+
+@media screen and (max-width: 840px) {
+    .page-body {
+        grid-template-columns: 1fr;
+    }
+
+    .movies-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .movies-grid {
+        grid-template-columns: 1fr;
+    }
+}

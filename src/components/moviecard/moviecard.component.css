@@ -45,3 +45,13 @@
     line-height: 1rem;
     color: var(--caption-color);
 }
+
+@media screen and (max-width: 480px) {
+    .movie-card {
+        width: 300px;
+    }
+
+    .movie-image-container {
+        height: 400px;
+    }
+}

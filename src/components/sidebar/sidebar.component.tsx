@@ -1,14 +1,16 @@
 import type React from 'react';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { GenreContext, MoviesContext } from '../../contexts/contexts';
 import customFetch from '../../utils/customFetch';
 import './sidebar.component.css';
 
 interface SidebarProps {
-  onGenreChange: (selectedGenre: string) => void
+  onGenreChange: (selectedGenre: string) => void;
+  isOpen: boolean;
+  toggle: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ onGenreChange }) => {
+const Sidebar: React.FC<SidebarProps> = ({ onGenreChange, isOpen, toggle }) => {
   const genres = useContext(GenreContext);
   const movies = useContext(MoviesContext);
 
@@ -27,17 +29,36 @@ const Sidebar: React.FC<SidebarProps> = ({ onGenreChange }) => {
         movies.updateData(genreMovies);
       }
     }
-  }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
+
+    // Cleanup just in case
+    return () => document.body.classList.remove('no-scroll');
+  }, [isOpen]);
 
   return (
-    <div className='sidebar' onClick={clickHandler}>
-      {
-        genres.map((genre, index) => (
-          genre ? <span key={genre} data-index={index} className='filter'>{genre}</span> :
-            <span key='all' data-index={index} className='filter'>All</span>
-        ))
-      }
-    </div>
+    <>
+      {isOpen && <div className="sidebar-overlay" onClick={toggle}></div>}
+      <div className={`sidebar ${isOpen ? 'open' : ''}`} onClick={clickHandler}>
+        <div className="sidebar-buttons">
+          {
+            isOpen && <button className='close-btn' onClick={toggle}>X</button>
+          }
+        </div>
+        {
+          genres.map((genre, index) => (
+            genre ? <span key={genre} data-index={index} className='filter'>{genre}</span> :
+              <span key='all' data-index={index} className='filter'>All</span>
+          ))
+        }
+      </div>
+    </>
   )
 }
 
