@@ -1,9 +1,9 @@
 import { useEffect, useState, type FC, type PropsWithChildren } from "react";
 import customFetch from "../utils/customFetch";
-import { type IMovieApiResponse } from "../utils/types";
+import { type IMovie, type IMovieApiResponse } from "../utils/types";
 import { MoviesContext } from "./contexts";
 
-function getPrevPage(url:string | undefined, current: number) {
+function getPrevPage(url: string | undefined, current: number) {
     if (!url || !url.includes('?')) return '';
 
     const [path, queryStr] = url.split('?');
@@ -11,6 +11,18 @@ function getPrevPage(url:string | undefined, current: number) {
     const params = new URLSearchParams(queryStr);
     params.set('page', prev.toString());
     return `${path}?${params.toString()}`;
+}
+
+function getMovieRatings(movies: IMovie[]) {
+    const moviesWithRatings = movies.map(async (movie) => {
+        const rating = await customFetch(`/titles/${movie.id}/ratings`);
+        return {
+            ...movie,
+            rating: { ...rating.results }
+        }
+    });
+
+    return moviesWithRatings;
 }
 
 const MoviesProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -21,40 +33,27 @@ const MoviesProvider: FC<PropsWithChildren> = ({ children }) => {
         results: []
     });
 
+    const updateData = async (newData: IMovieApiResponse) => {
+        const resultsWithRatings = await Promise.all(getMovieRatings(newData.results));
+        const prev = getPrevPage(newData.next, newData.page);
+
+        setData({
+            ...newData,
+            prev,
+            results: resultsWithRatings
+        })
+    };
+
     useEffect(() => {
         const getInitialMovies = async () => {
             const response: IMovieApiResponse | undefined = await customFetch('/titles');
             if (response) {
-                const resultsWithRatings = await Promise.all(
-                    response.results.map(async (movie) => {
-                        const rating = await customFetch(`/titles/${movie.id}/ratings`);
-                        return {
-                            ...movie,
-                            rating: {...rating.results}
-                        }
-                    }));
-
-                const prev = getPrevPage(response.next, response.page);
-
-                setData({
-                    ...response,
-                    prev,
-                    results: resultsWithRatings
-                })
+                updateData(response);
             };
         }
 
         getInitialMovies();
     }, []);
-
-    const updateData = (newData: IMovieApiResponse) => {
-        console.log(newData);
-        const prev = getPrevPage(newData.next, newData.page);
-        setData({
-            ...newData,
-            prev
-        })
-    };
 
     console.log(data);
 

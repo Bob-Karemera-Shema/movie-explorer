@@ -18,10 +18,11 @@ const Sidebar: React.FC<SidebarProps> = ({ onGenreChange }) => {
     if (target.tagName.toLowerCase() === 'span') {
       if (target.dataset.index) {
         const index = parseInt(target.dataset.index);
-        onGenreChange(genres[index]);
+        const selectedGenre = index === 0 ? 'All' : genres[index];
+        const url = index === 0 ? '/titles' : `/titles?genre=${genres[index]}`;
 
-        const genreMovies = await customFetch(`/titles?genre=${genres[index]}`);
-        console.log(genreMovies);
+        onGenreChange(selectedGenre);
+        const genreMovies = await customFetch(url);
         movies.updateData(genreMovies);
       }
     }
@@ -31,7 +32,8 @@ const Sidebar: React.FC<SidebarProps> = ({ onGenreChange }) => {
     <div className='sidebar' onClick={clickHandler}>
       {
         genres.map((genre, index) => (
-          genre && <span key={index} data-index={index} className='filter'>{genre}</span>
+          genre ? <span key={genre} data-index={index} className='filter'>{genre}</span> :
+            <span key='all' data-index={index} className='filter'>All</span>
         ))
       }
     </div>

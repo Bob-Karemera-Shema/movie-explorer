@@ -1,29 +1,34 @@
-import { useState, type ChangeEvent } from 'react';
+import { useContext, useState, type FormEvent } from 'react';
 import { IoIosSearch } from "react-icons/io";
-import { testData } from '../../assets/data/test-data';
+import Button from '../button/button.component';
+import customFetch from '../../utils/customFetch';
+import { MoviesContext } from '../../contexts/contexts';
 import './searchbar.component.css';
 
 const Searchbar = () => {
-  const [search, setSearch] = useState('');
+  const [title, setTitle] = useState('');
+  const movies = useContext(MoviesContext);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-    console.log(testData.results.filter(movie => movie.titleText.text.toLowerCase().includes(e.target.value.toLowerCase())));
+  const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const searchData = await customFetch(`/titles/search/title/${title}?exact=false&titleType=movie`);
+    movies.updateData(searchData);
   }
 
-  const handleSearch = () => {}
-
   return (
-    <div className='searchbar-container'>
+    <form className='searchbar-container' onSubmit={handleSearch}>
       <input
         className='serchbar-input'
         type='text'
         placeholder='Search . . .'
-        value={search}
-        onChange={handleChange}
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        required
       />
-      <IoIosSearch className='searchbar-button' onClick={handleSearch} />
-    </div>
+      <Button type='submit' className='secondary-button'>
+        <IoIosSearch />
+      </Button>
+    </form>
   )
 }
 
