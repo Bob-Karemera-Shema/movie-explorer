@@ -1,0 +1,33 @@
+.primary-button,
+.secondary-button {
+    border: none;
+    border-radius: 5px;
+    background-color: var(--yellow);
+    color: var(--white);
+    font-size: 16px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.primary-button {
+    padding: 15px;
+    font-weight: 500;
+}
+
+.secondary-button {
+    padding: 10px;
+    height: 100%;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.primary-button:hover {
+    background-color: var(--black);
+}
+
+.secondary-button:hover {
+    background-color: var(--dark-gray);
+}

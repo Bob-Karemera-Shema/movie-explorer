@@ -1,0 +1,25 @@
+.searchbar-container {
+    width: fit-content;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.serchbar-input {
+    height: 100%;
+    width: 400px;
+    padding: 7px 10px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: var(--dark-gray);
+    color: var(--white);
+    font-size: 16px;
+}
+
+@media screen and (max-width: 480px) {
+    .searchbar-container {
+        width: 100%;
+    }
+}

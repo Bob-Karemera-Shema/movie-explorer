@@ -1,10 +1,15 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
+import MoviesProvider from './contexts/movies.provider.tsx'
+import GenreProvider from './contexts/genres.provider.tsx'
 import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <MoviesProvider>
+      <GenreProvider>
+        <App />
+      </GenreProvider>
+    </MoviesProvider>
   </StrictMode>,
 )
