@@ -11,11 +11,13 @@
 * {
     padding: 0;
     margin: 0;
-    font-family: "IBM Plex Sans Condensed", sans-serif;;
+    font-family: "IBM Plex Sans Condensed", sans-serif;
+    box-sizing: border-box;
 }
 
 body {
     background-color: var(--dark-gray);
+    overflow: hidden;
     color: var(--white);
 }
 
@@ -67,15 +69,32 @@ body {
 
 @media screen and (max-width: 840px) {
     .page-body {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: auto;
+        overflow: hidden;
+    }
+
+    .movies-section {
+        overflow: unset;
     }
 
     .movies-grid {
         grid-template-columns: repeat(3, 1fr);
     }
+
+    .pagination-container {
+        margin-bottom: 2rem;
+    }
+
+    .header {
+        padding: 0;
+    }
 }
 
 @media screen and (max-width: 480px) {
+
     .movies-grid {
         grid-template-columns: 1fr;
     }
