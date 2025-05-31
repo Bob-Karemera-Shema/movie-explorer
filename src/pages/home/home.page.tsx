@@ -1,4 +1,4 @@
-import { useEffect, useState, type MouseEvent } from 'react';
+import { useEffect, type MouseEvent } from 'react';
 import Sidebar from '../../components/sidebar/sidebar.component';
 import MovieCard from '../../components/moviecard/moviecard.component';
 import Button from '../../components/button/button.component';
@@ -11,7 +11,7 @@ import './home.page.css';
 // import type { IMovieApiResponse } from '../../utils/types';
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { selectCurrentPage, selectGenreError, selectGenreStatus, selectMovieError, selectMovies, selectMovieStatus, selectNextPage, selectPrevPage } from '../../store/moviesSlice';
+import { selectCurrentPage, selectGenreError, selectGenreStatus, selectMovieError, selectMovies, selectMovieStatus, selectNextPage, selectPageTitle, selectPrevPage } from '../../store/moviesSlice';
 import { fetchGenres, fetchMovies } from '../../store/thunks';
 
 export default function Home() {
@@ -23,6 +23,7 @@ export default function Home() {
   const currentPage = useAppSelector(selectCurrentPage);
   const prevPage = useAppSelector(selectPrevPage);
   const nextPage = useAppSelector(selectNextPage);
+  const pageTitle = useAppSelector(selectPageTitle);
 
   // Loading status
   const movieStatus = useAppSelector(selectMovieStatus);
@@ -31,10 +32,6 @@ export default function Home() {
   // Errors
   const movieError = useAppSelector(selectMovieError);
   const genreError = useAppSelector(selectGenreError);
-  
-  const [currentGenre, setCurrentGenre] = useState('Popular');
-
-  const onGenreChange = (selectedGenre: string) => setCurrentGenre(selectedGenre);
 
   const onPageChange = (e: MouseEvent<HTMLButtonElement>) => {
     const direction = e.currentTarget.dataset.direction;
@@ -78,10 +75,10 @@ export default function Home() {
       {
         (movieStatus !== 'pending' && genreStatus !== 'pending' && !movieError && !genreError && movies) && (
           <div className='page-body'>
-            <Sidebar onGenreChange={onGenreChange} />
+            <Sidebar />
             <div className="movies-section">
               <div className='header'>
-                <h1>{currentGenre}</h1>
+                <h1>{pageTitle}</h1>
               </div>
               <div className="movies-grid">
                 {

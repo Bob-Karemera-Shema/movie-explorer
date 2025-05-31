@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 import type { RootState } from "./store";
 import type { IMovieApiResponse } from "../utils/types";
@@ -13,6 +13,7 @@ interface MovieState {
     genreStatus: 'idle' | 'pending'
     movieError: string | null
     genreError: string | null
+    pageTitle: string
 };
 
 const initialState: MovieState = {
@@ -21,13 +22,18 @@ const initialState: MovieState = {
     movieStatus: 'idle',
     genreStatus: 'idle',
     movieError: null,
-    genreError: null
+    genreError: null,
+    pageTitle: 'Popular'
 };
 
 const moviesSlice = createSlice({
     name: 'movies',
     initialState,
-    reducers: {},
+    reducers: {
+        updatePageTitle(state, action: PayloadAction<string>) {
+            state.pageTitle = action.payload;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchMovies.pending, (state) => {
@@ -73,6 +79,9 @@ const moviesSlice = createSlice({
     }
 });
 
+// Export action creators
+export const { updatePageTitle } = moviesSlice.actions;
+
 // Export reducer function
 export default moviesSlice.reducer;
 
@@ -82,6 +91,8 @@ export const selectCurrentPage = (state: RootState) => state.movies.apiMovieResp
 export const selectPrevPage = (state: RootState) => state.movies.apiMovieResponse?.prev;
 
 export const selectNextPage = (state: RootState) => state.movies.apiMovieResponse?.next;
+
+export const selectPageTitle = (state: RootState) => state.movies.pageTitle;
 
 // Export movie selectors
 export const selectMovies = (state: RootState) => state.movies.apiMovieResponse?.results;

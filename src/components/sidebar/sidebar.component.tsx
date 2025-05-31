@@ -1,16 +1,12 @@
 import type React from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { selectGenres } from '../../store/moviesSlice';
+import { selectGenres, updatePageTitle } from '../../store/moviesSlice';
 import { fetchMovies } from '../../store/thunks';
 
 import './sidebar.component.css';
 
-interface SidebarProps {
-  onGenreChange: (selectedGenre: string) => void;
-}
-
-const Sidebar: React.FC<SidebarProps> = ({ onGenreChange }) => {
+const Sidebar = () => {
   const dispatch = useAppDispatch();
   const genres = useAppSelector(selectGenres);
 
@@ -23,7 +19,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onGenreChange }) => {
         const selectedGenre = index === 0 ? 'All' : genres[index];
         const url = index === 0 ? '/titles' : `/titles?genre=${genres[index]}`;
 
-        onGenreChange(selectedGenre);
+        dispatch(updatePageTitle(selectedGenre))
         dispatch(fetchMovies(url));
       }
     }

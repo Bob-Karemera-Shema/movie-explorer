@@ -1,19 +1,21 @@
-import { useContext, useState, type FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
+import { useAppDispatch } from '../../store/hooks';
+import { fetchMovies } from '../../store/thunks';
+import { updatePageTitle } from '../../store/moviesSlice';
+
 import { IoIosSearch } from "react-icons/io";
 import Button from '../button/button.component';
-import customFetch from '../../utils/customFetch';
-import { MoviesContext } from '../../contexts/contexts';
+
 import './searchbar.component.css';
 
 const Searchbar = () => {
+  const dispatch = useAppDispatch();
   const [title, setTitle] = useState('');
-  const movies = useContext(MoviesContext);
 
   const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    movies.startLoadingState();
-    const searchData = await customFetch(`/titles/search/title/${title}?exact=false&titleType=movie`);
-    movies.updateData(searchData);
+    dispatch(updatePageTitle(`Search results "${title}"`))
+    dispatch(fetchMovies(`/titles/search/title/${title}?exact=false&titleType=movie`));
   }
 
   return (
