@@ -42,7 +42,8 @@ export interface IMovie {
     tconst: string;
     averageRating: number;
     numVotes: number;
-  }
+  };
+  toWatch?: boolean
 }
 export interface IMovieApiResponse {
   page: number;
@@ -54,6 +55,14 @@ export interface IMovieApiResponse {
 
 export interface IGenreApiResponse {
   results: string[];
+}
+
+export interface IRatingApiResponse {
+  results: {
+    tconst: string
+    averageRating: number
+    numVotes: number
+  }
 }
 
 export interface IMovieContext {
