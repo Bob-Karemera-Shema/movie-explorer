@@ -1,13 +1,11 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 import type { RootState } from "./store";
-import type { IMovieApiResponse } from "../utils/types";
-
-import { addMovieToList, removeMovieFromList } from "./watchlistSlice";
+import type { IMoviesApiResponse } from "../utils/types";
 import { fetchGenres, fetchMovies } from "./thunks";
 
 interface MovieState {
-    apiMovieResponse: IMovieApiResponse | null
+    apiMovieResponse: IMoviesApiResponse | null
     genres: string[] | null
     movieStatus: 'idle' | 'pending'
     genreStatus: 'idle' | 'pending'
@@ -59,22 +57,6 @@ const moviesSlice = createSlice({
             .addCase(fetchGenres.rejected, (state, action) => {
                 state.genreStatus = 'idle';
                 state.genreError = action.payload ?? 'Failed to fetch genres';
-            })
-            .addCase(addMovieToList, (state, action) => {
-                if (!state.apiMovieResponse) return;
-
-                const index = state.apiMovieResponse?.results.findIndex(movie => movie.id === action.payload.id);
-                if (index) {
-                    state.apiMovieResponse.results[index].toWatch = true;
-                }
-            })
-            .addCase(removeMovieFromList, (state, action) => {
-                if (!state.apiMovieResponse) return;
-
-                const index = state.apiMovieResponse?.results.findIndex(movie => movie.id === action.payload);
-                if (index) {
-                    state.apiMovieResponse.results[index].toWatch = false;
-                }
             })
     }
 });

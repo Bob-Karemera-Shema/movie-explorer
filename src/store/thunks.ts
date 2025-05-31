@@ -1,5 +1,5 @@
 import customFetch from "../utils/customFetch";
-import type { IGenreApiResponse, IMovie, IMovieApiResponse, IRatingApiResponse } from "../utils/types";
+import type { IGenreApiResponse, IMovie, IMoviesApiResponse, IRatingApiResponse } from "../utils/types";
 import { selectMovieStatus } from "./moviesSlice";
 import { createAppAsyncThunk } from "./withTypes";
 
@@ -29,14 +29,14 @@ async function addRatingsToMovies(movies: IMovie[]): Promise<IMovie[]> {
     );
 }
 
-export const fetchMovies = createAppAsyncThunk<IMovieApiResponse, string>(
+export const fetchMovies = createAppAsyncThunk<IMoviesApiResponse, string>(
     'movies/fetchMovies',
     async (endpoint, thunkAPI) => {
         try {
-            const response = await customFetch<IMovieApiResponse>(endpoint);
-            const enrichedResults = await addRatingsToMovies(response.results);
+            const response = await customFetch<IMoviesApiResponse>(endpoint);
+            const ratedResults = await addRatingsToMovies(response.results);
             const prev = getPrevPage(response.next, response.page);
-            return { ...response, prev, results: enrichedResults };
+            return { ...response, prev, results: ratedResults };
         } catch (error) {
             const message = error instanceof Error ? error.message : 'Unknown error';
             return thunkAPI.rejectWithValue(message);

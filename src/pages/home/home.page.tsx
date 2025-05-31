@@ -1,18 +1,15 @@
 import { useEffect, type MouseEvent } from 'react';
+
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { selectCurrentPage, selectGenreError, selectGenreStatus, selectMovieError, selectMovies, selectMovieStatus, selectNextPage, selectPageTitle, selectPrevPage } from '../../store/moviesSlice';
+import { fetchGenres, fetchMovies } from '../../store/thunks';
+
 import Sidebar from '../../components/sidebar/sidebar.component';
 import MovieCard from '../../components/moviecard/moviecard.component';
 import Button from '../../components/button/button.component';
 import Spinner from '../../components/spinner/spinner.component';
 
-// import { MoviesContext } from '../../contexts/contexts';
-// import customFetch from '../../utils/customFetch';
-
 import './home.page.css';
-// import type { IMovieApiResponse } from '../../utils/types';
-
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { selectCurrentPage, selectGenreError, selectGenreStatus, selectMovieError, selectMovies, selectMovieStatus, selectNextPage, selectPageTitle, selectPrevPage } from '../../store/moviesSlice';
-import { fetchGenres, fetchMovies } from '../../store/thunks';
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -37,11 +34,9 @@ export default function Home() {
     const direction = e.currentTarget.dataset.direction;
 
     if (direction === 'prev' && prevPage && currentPage && currentPage > 1) {
-      console.log('prev');
       dispatch(fetchMovies(prevPage));
     }
     if (direction === 'next' && nextPage) {
-      console.log('next');
       dispatch(fetchMovies(nextPage));
     }
   }
@@ -50,8 +45,6 @@ export default function Home() {
     dispatch(fetchGenres('/titles/utils/genres'));
     dispatch(fetchMovies('/titles'));
   }, [dispatch])
-
-  console.log(movies);
 
   return (
     <>
@@ -86,8 +79,8 @@ export default function Home() {
                 }
               </div>
               <div className="pagination-container">
-                <Button data-direction="prev" onClick={onPageChange} disabled={currentPage === 1}>Prev</Button>
-                <Button data-direction="next" onClick={onPageChange} disabled={!(nextPage !== undefined)}>Next</Button>
+                <Button data-direction="prev" className='pagination-button' onClick={onPageChange} disabled={currentPage === 1}>Prev</Button>
+                <Button data-direction="next" className='pagination-button' onClick={onPageChange} disabled={!(nextPage !== undefined)}>Next</Button>
               </div>
             </div>
           </div>

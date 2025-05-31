@@ -27,3 +27,5 @@ export default watchListSlice.reducer;
 
 // Export list selector
 export const selectWatchListMovies = (state: RootState) => state.watchlist.toWatch;
+
+export const isMovieInWatchList = (movieId: string) => (state: RootState): boolean => state.watchlist.toWatch.some(movie => movie.id === movieId);
