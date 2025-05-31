@@ -77,8 +77,6 @@ const MoviesProvider: FC<PropsWithChildren> = ({ children }) => {
         getInitialMovies();
     }, []);
 
-    console.log(data);
-
     const value = { data, loading, error, updateData, startLoadingState };
 
     return (

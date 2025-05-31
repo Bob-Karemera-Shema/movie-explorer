@@ -1,10 +1,12 @@
 import { configureStore, type Action, type ThunkAction } from "@reduxjs/toolkit";
 
 import moviesReducer from './moviesSlice';
+import watchlistReducer from './watchlistSlice';
 
 export const store = configureStore({
     reducer: {
-        movies: moviesReducer
+        movies: moviesReducer,
+        watchlist: watchlistReducer
     }
 });
 
