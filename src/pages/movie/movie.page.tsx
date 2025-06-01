@@ -1,21 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router';
 
-import customFetch from '../../utils/customFetch';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { addMovieToList, isMovieInWatchList, removeMovieFromList } from '../../store/watchlistSlice';
-
-import type { IMovie, IRatingApiResponse, ITitleIdApiResponse } from '../../utils/types';
 
 import Button from '../../components/button/button.component';
 
 import './movie.page.css';
+import { selectSelectedMovie, selectSelectedMovieError, selectSelectedMovieStatus } from '../../store/moviesSlice';
+import { fetchMovieById } from '../../store/thunks';
+import Feedback from '../../components/feedback.component';
 
 export default function Movie() {
   const { id } = useParams();
   const dispatch = useAppDispatch();
+  const movie = useAppSelector(selectSelectedMovie);
+  const status = useAppSelector(selectSelectedMovieStatus);
+  const error = useAppSelector(selectSelectedMovieError);
   const inWatchList = useAppSelector(id ? isMovieInWatchList(id) : () => false);
-  const [movie, setMovie] = useState<IMovie | null>(null);
 
   const addToList = () => {
     if (movie) dispatch(addMovieToList(movie));
@@ -26,20 +28,17 @@ export default function Movie() {
   }
 
   useEffect(() => {
-    const getMovie = async () => {
-      const response = await customFetch<ITitleIdApiResponse>(`/titles/${id}`);
-      const rating = await customFetch<IRatingApiResponse>(`/titles/${id}/ratings`);
-
-      setMovie({ ...response.results, rating: rating.results })
-    };
-
-    if (id) getMovie();
-  }, [id]);
+    if (id) dispatch(fetchMovieById(id));
+  }, [dispatch, id]);
 
   return (
     <main className='movie-page'>
+      <Feedback
+        isLoading={status === 'pending'}
+        errors={[error].filter((error) => error !== null)}
+      />
       {
-        movie && (
+        (status === 'idle' && !error && movie) && (
           <section className='movie-section'>
             <article className='movie-image-container'>
               <img src={movie.primaryImage?.url} alt={movie.originalTitleText.text} />

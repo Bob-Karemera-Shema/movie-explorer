@@ -5,18 +5,18 @@ import { selectCurrentPage, selectGenreError, selectGenreStatus, selectMovieErro
 import { fetchGenres, fetchMovies } from '../../store/thunks';
 
 import Sidebar from '../../components/sidebar/sidebar.component';
+// import Spinner from '../../components/spinner/spinner.component';
 import MovieCard from '../../components/moviecard/moviecard.component';
 import Button from '../../components/button/button.component';
-import Spinner from '../../components/spinner/spinner.component';
 
 import './home.page.css';
+import Feedback from '../../components/feedback.component';
 
 export default function Home() {
   const dispatch = useAppDispatch();
-  
+
   const movies = useAppSelector(selectMovies);
-  
-  // Page info
+
   const currentPage = useAppSelector(selectCurrentPage);
   const prevPage = useAppSelector(selectPrevPage);
   const nextPage = useAppSelector(selectNextPage);
@@ -48,44 +48,27 @@ export default function Home() {
 
   return (
     <>
-      {
-        movieStatus === 'pending' || genreStatus === 'pending' && (
-          <div className='feedback-container'>
-            <Spinner />
+      <main className='home-page'>
+        <Sidebar />
+        <Feedback
+          isLoading={movieStatus === 'pending' || genreStatus === 'pending'}
+          errors={[movieError, genreError].filter((error) => error !== null)}
+        />
+        <section className="movies-grid-section">
+          <div className='movie-grid-header'>
+            <h1>{pageTitle}</h1>
           </div>
-        )
-      }
-
-      {
-        movieError || genreError && (
-          <div className='error-container'>
-            {movieError && <p>{movieError}</p>}
-            {genreError && <p>{genreError}</p>}
+          <div className="movies-grid">
+            {
+              movies && movies.map((movie) => <MovieCard key={movie.id} movie={movie} withClickNavigation />)
+            }
           </div>
-        )
-      }
-
-      {
-        (movieStatus !== 'pending' && genreStatus !== 'pending' && !movieError && !genreError && movies) && (
-          <div className='page-body'>
-            <Sidebar />
-            <div className="movies-section">
-              <div className='header'>
-                <h1>{pageTitle}</h1>
-              </div>
-              <div className="movies-grid">
-                {
-                  movies.map((movie) => <MovieCard key={movie.id} movie={movie} />)
-                }
-              </div>
-              <div className="pagination-container">
-                <Button data-direction="prev" className='pagination-button' onClick={onPageChange} disabled={currentPage === 1}>Prev</Button>
-                <Button data-direction="next" className='pagination-button' onClick={onPageChange} disabled={!(nextPage !== undefined)}>Next</Button>
-              </div>
-            </div>
+          <div className="pagination-container">
+            <Button data-direction="prev" className='pagination-button' onClick={onPageChange} disabled={currentPage === 1}>Prev</Button>
+            <Button data-direction="next" className='pagination-button' onClick={onPageChange} disabled={!(nextPage !== undefined)}>Next</Button>
           </div>
-        )
-      }
+        </section>
+      </main>
     </>
   )
 }

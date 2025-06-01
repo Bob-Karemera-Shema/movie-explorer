@@ -48,3 +48,21 @@
 .movie-details-container .primary-button {
     width: fit-content;
 }
+
+@media screen and (max-width: 480px) {
+    .movie-page {
+        padding: 2rem;
+        padding-bottom: 4rem;
+        height: 100%;
+    }
+
+    .movie-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .movie-section .movie-image-container {
+        width: 100%;
+        height: auto;
+    }
+}

@@ -1,6 +1,5 @@
 import customFetch from "../utils/customFetch";
-import type { IGenreApiResponse, IMovie, IMoviesApiResponse, IRatingApiResponse } from "../utils/types";
-import { selectMovieStatus } from "./moviesSlice";
+import type { IGenreApiResponse, IMovie, IMoviesApiResponse, IRatingApiResponse, ITitleIdApiResponse } from "../utils/types";
 import { createAppAsyncThunk } from "./withTypes";
 
 function getPrevPage(url: string | undefined, current: number) {
@@ -41,11 +40,22 @@ export const fetchMovies = createAppAsyncThunk<IMoviesApiResponse, string>(
             const message = error instanceof Error ? error.message : 'Unknown error';
             return thunkAPI.rejectWithValue(message);
         }
-    },
-    {
-        condition(_, thunkApi) {
-            const moviesStatus = selectMovieStatus(thunkApi.getState());
-            if (moviesStatus !== 'idle') return false;
+    }
+);
+
+export const fetchMovieById = createAppAsyncThunk<IMovie, string>(
+    'movies/fetchMovieById',
+    async (id, thunkAPI) => {
+        try {
+            const movieResponse = await customFetch<ITitleIdApiResponse>(`/titles/${id}`);
+            const ratingResponse = await customFetch<IRatingApiResponse>(`/titles/${id}/ratings`);
+            return {
+                ...movieResponse.results,
+                rating: ratingResponse.results,
+            };
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Unknown error';
+            return thunkAPI.rejectWithValue(message);
         }
     }
 );

@@ -1,8 +1,8 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 import type { RootState } from "./store";
-import type { IMoviesApiResponse } from "../utils/types";
-import { fetchGenres, fetchMovies } from "./thunks";
+import type { IMovie, IMoviesApiResponse } from "../utils/types";
+import { fetchGenres, fetchMovieById, fetchMovies } from "./thunks";
 
 interface MovieState {
     apiMovieResponse: IMoviesApiResponse | null
@@ -11,6 +11,9 @@ interface MovieState {
     genreStatus: 'idle' | 'pending'
     movieError: string | null
     genreError: string | null
+    selectedMovie: IMovie | null
+    selectedMovieStatus: 'idle' | 'pending'
+    selectedMovieError: string | null
     pageTitle: string
 };
 
@@ -21,6 +24,9 @@ const initialState: MovieState = {
     genreStatus: 'idle',
     movieError: null,
     genreError: null,
+    selectedMovie: null,
+    selectedMovieStatus: 'idle',
+    selectedMovieError: null,
     pageTitle: 'Popular'
 };
 
@@ -58,6 +64,18 @@ const moviesSlice = createSlice({
                 state.genreStatus = 'idle';
                 state.genreError = action.payload ?? 'Failed to fetch genres';
             })
+            .addCase(fetchMovieById.pending, (state) => {
+                state.selectedMovieStatus = 'pending';
+                state.selectedMovieError = null;
+            })
+            .addCase(fetchMovieById.fulfilled, (state, action) => {
+                state.selectedMovieStatus = 'idle';
+                state.selectedMovie = action.payload;
+            })
+            .addCase(fetchMovieById.rejected, (state, action) => {
+                state.selectedMovieStatus = 'idle';
+                state.selectedMovieError = action.payload || 'Failed to fetch movie';
+            })
     }
 });
 
@@ -91,3 +109,10 @@ export const selectGenres = (state: RootState) => state.movies.genres;
 export const selectGenreStatus = (state: RootState) => state.movies.genreStatus;
 
 export const selectGenreError = (state: RootState) => state.movies.genreError;
+
+// Export selected movie selectors
+export const selectSelectedMovie = (state: RootState) => state.movies.selectedMovie;
+
+export const selectSelectedMovieStatus = (state: RootState) => state.movies.selectedMovieStatus;
+
+export const selectSelectedMovieError = (state: RootState) => state.movies.selectedMovieError;
