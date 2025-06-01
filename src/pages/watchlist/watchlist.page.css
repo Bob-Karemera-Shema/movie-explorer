@@ -21,5 +21,22 @@
 @media screen and (max-width: 480px) {
     .watchlist-page {
         padding: 2rem;
+        padding-bottom: 4rem;
+    }
+
+    .watchlist-header {
+        padding-left: 2rem;
+    }
+
+    .watchlist-grid {
+        column-gap: 0;
+        row-gap: 30px;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .watchlist-header {
+        padding-left: 0;
     }
 }

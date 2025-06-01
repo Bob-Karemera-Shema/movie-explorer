@@ -5,9 +5,14 @@ import './navbar.component.css';
 const Navbar = () => {
   return (
     <nav className='navbar-container'>
+      <div className='navlinks'>
         <Link to='/' className='navbar-logo'>wat<span className='navbar-logo-highlight'>ch</span></Link>
-        <Link to='/watchlist' className='nav-link'>Watchlist</Link>
-        <Searchbar />
+        <div>
+          <Link to='/' className='navlink'>Home</Link>
+          <Link to='/watchlist' className='navlink'>Watchlist</Link>
+        </div>
+      </div>
+      <Searchbar />
     </nav>
   )
 }

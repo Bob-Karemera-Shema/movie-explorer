@@ -11,10 +11,9 @@ export default function WatchList() {
 
   return (
     <main className='watchlist-page'>
-      <section className="watchlist-section">
-        <div className='watchlist-header'>
+        <header className='watchlist-header'>
           <h1>Watchlist</h1>
-        </div>
+        </header>
         {
           watchlist.length === 0 ? (
             <p>Your watchlist is empty!</p>
@@ -32,7 +31,6 @@ export default function WatchList() {
             </div>
           )
         }
-      </section>
     </main>
   )
 }

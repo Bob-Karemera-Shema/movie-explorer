@@ -38,7 +38,7 @@ export default function Home() {
     const nextPage = direction === 'next' ? (next?.length ? page + 1 : page) : Math.max(1, page - 1);
     const newParams = new URLSearchParams(searchParams);
     newParams.set('page', nextPage.toString());
-    
+
     navigate(`/titles?${newParams.toString()}`);
   };
 

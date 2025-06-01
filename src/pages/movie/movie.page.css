@@ -58,7 +58,6 @@
 
     .movie-section {
         flex-direction: column;
-        align-items: center;
     }
 
     .movie-section .movie-image-container {

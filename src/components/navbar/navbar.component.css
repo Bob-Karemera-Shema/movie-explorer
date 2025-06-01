@@ -5,6 +5,27 @@
     justify-content: space-between;
 }
 
+.navlinks {
+    display: flex;
+    gap: 60px;
+    align-items: center;
+}
+
+.navlinks div {
+    display: flex;
+    gap: 20px;
+}
+
+.navlink {
+    text-decoration: none;
+    color: var(--white);
+    font-size: 20px;
+}
+
+.navlink:hover {
+    color: var(--yellow);
+}
+
 .navbar-logo {
     font-size: 30px;
     font-weight: 900;
@@ -17,10 +38,15 @@
     color: var(--yellow);
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 768px) {
     .navbar-container {
         flex-direction: column;
         align-items: center;
         gap: 1rem;
+    }
+
+    .navlinks {
+        width: 100%;
+        justify-content: space-between;
     }
 }
