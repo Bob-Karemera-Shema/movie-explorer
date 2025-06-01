@@ -42,24 +42,35 @@ export interface IMovie {
     tconst: string;
     averageRating: number;
     numVotes: number;
-  }
+  };
 }
-export interface IMovieApiResponse {
+export interface IMoviesApiResponse {
   page: number;
-  prev?: string;
   next: string;
   entries: number;
   results: IMovie[];
+}
+
+export interface ITitleIdApiResponse {
+  results: IMovie
 }
 
 export interface IGenreApiResponse {
   results: string[];
 }
 
+export interface IRatingApiResponse {
+  results: {
+    tconst: string
+    averageRating: number
+    numVotes: number
+  }
+}
+
 export interface IMovieContext {
-  data: IMovieApiResponse;
+  data: IMoviesApiResponse;
   loading: boolean;
   error: string | null;
-  updateData: (newData: IMovieApiResponse) => void;
+  updateData: (newData: IMoviesApiResponse) => void;
   startLoadingState: () => void;
 }

@@ -1,0 +1,42 @@
+.watchlist-page {
+    width: 100vw;
+    height: 100%;
+    padding: 2rem 4rem;
+}
+
+.watchlist-header {
+    margin-bottom: 2rem;
+}
+
+.watchlist-header h1 {
+    font-size: 40px;
+}
+
+.watchlist-grid {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+@media screen and (max-width: 480px) {
+    .watchlist-page {
+        padding: 2rem;
+        padding-bottom: 4rem;
+    }
+
+    .watchlist-header {
+        padding-left: 2rem;
+    }
+
+    .watchlist-grid {
+        column-gap: 0;
+        row-gap: 30px;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .watchlist-header {
+        padding-left: 0;
+    }
+}

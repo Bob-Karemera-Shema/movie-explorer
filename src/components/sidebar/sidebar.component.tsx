@@ -1,43 +1,35 @@
 import type React from 'react';
-import { useContext } from 'react';
-import { GenreContext, MoviesContext } from '../../contexts/contexts';
-import customFetch from '../../utils/customFetch';
+
+import { useAppSelector } from '../../store/hooks';
+import { selectGenres } from '../../store/moviesSlice';
+
 import './sidebar.component.css';
+import { useNavigate } from 'react-router';
 
-interface SidebarProps {
-  onGenreChange: (selectedGenre: string) => void;
-}
-
-const Sidebar: React.FC<SidebarProps> = ({ onGenreChange }) => {
-  const genres = useContext(GenreContext);
-  const movies = useContext(MoviesContext);
+const Sidebar = () => {
+  const navigate = useNavigate()
+  const genres = useAppSelector(selectGenres);
 
   const clickHandler = async (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
 
-    if (target.tagName.toLowerCase() === 'span') {
-      if (target.dataset.index) {
+    if (target.tagName.toLowerCase() === 'span' && target.dataset.index && genres) {
         const index = parseInt(target.dataset.index);
-        const selectedGenre = index === 0 ? 'All' : genres[index];
-        const url = index === 0 ? '/titles' : `/titles?genre=${genres[index]}`;
+        const url = index === 0 ? '/titles?page=1' : `/titles?genre=${genres[index]}&page=1`;
 
-        movies.startLoadingState();
-        onGenreChange(selectedGenre);
-        const genreMovies = await customFetch(url);
-        movies.updateData(genreMovies);
-      }
+        navigate(url);
     }
   };
 
   return (
-      <div className='sidebar' onClick={clickHandler}>
-        {
-          genres.map((genre, index) => (
-            genre ? <span key={genre} data-index={index} className='filter'>{genre}</span> :
-              <span key='all' data-index={index} className='filter'>All</span>
-          ))
-        }
-      </div>
+    <div className='sidebar' onClick={clickHandler}>
+      {
+        genres && genres.map((genre, index) => (
+          genre ? <span key={genre} data-index={index} className='filter'>{genre}</span> :
+            <span key='popular' data-index={index} className='filter'>Popular</span>
+        ))
+      }
+    </div>
   )
 }
 
