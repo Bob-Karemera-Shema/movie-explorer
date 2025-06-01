@@ -1,27 +1,23 @@
 import type React from 'react';
 
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { selectGenres, updatePageTitle } from '../../store/moviesSlice';
-import { fetchMovies } from '../../store/thunks';
+import { useAppSelector } from '../../store/hooks';
+import { selectGenres } from '../../store/moviesSlice';
 
 import './sidebar.component.css';
+import { useNavigate } from 'react-router';
 
 const Sidebar = () => {
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate()
   const genres = useAppSelector(selectGenres);
 
   const clickHandler = async (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
 
-    if (target.tagName.toLowerCase() === 'span') {
-      if (target.dataset.index && genres) {
+    if (target.tagName.toLowerCase() === 'span' && target.dataset.index && genres) {
         const index = parseInt(target.dataset.index);
-        const selectedGenre = index === 0 ? 'All' : genres[index];
-        const url = index === 0 ? '/titles' : `/titles?genre=${genres[index]}`;
+        const url = index === 0 ? '/titles?page=1' : `/titles?genre=${genres[index]}&page=1`;
 
-        dispatch(updatePageTitle(selectedGenre))
-        dispatch(fetchMovies(url));
-      }
+        navigate(url);
     }
   };
 
@@ -30,7 +26,7 @@ const Sidebar = () => {
       {
         genres && genres.map((genre, index) => (
           genre ? <span key={genre} data-index={index} className='filter'>{genre}</span> :
-            <span key='all' data-index={index} className='filter'>All</span>
+            <span key='popular' data-index={index} className='filter'>Popular</span>
         ))
       }
     </div>

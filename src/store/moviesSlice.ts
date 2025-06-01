@@ -86,9 +86,6 @@ export const { updatePageTitle } = moviesSlice.actions;
 export default moviesSlice.reducer;
 
 // Export page info
-export const selectCurrentPage = (state: RootState) => state.movies.apiMovieResponse?.page;
-
-export const selectPrevPage = (state: RootState) => state.movies.apiMovieResponse?.prev;
 
 export const selectNextPage = (state: RootState) => state.movies.apiMovieResponse?.next;
 

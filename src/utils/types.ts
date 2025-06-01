@@ -46,7 +46,6 @@ export interface IMovie {
 }
 export interface IMoviesApiResponse {
   page: number;
-  prev?: string;
   next: string;
   entries: number;
   results: IMovie[];
