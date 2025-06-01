@@ -4,10 +4,10 @@ import { IoIosSearch } from "react-icons/io";
 import Button from '../button/button.component';
 
 import './searchbar.component.css';
-import { useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router';
 
 const Searchbar = () => {
-  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [title, setTitle] = useState('');
 
   const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
@@ -16,10 +16,12 @@ const Searchbar = () => {
     const query = title.trim();
     if(!query) return;
 
+    const updatedParams = new URLSearchParams(searchParams);
+    updatedParams.set('search', query);
+    updatedParams.set('page', '1');
+
+    setSearchParams(updatedParams);
     setTitle('');
-    
-    // Navigate to search url
-    navigate(`/titles?search=${encodeURIComponent(query)}&page=1`);
   }
 
   return (

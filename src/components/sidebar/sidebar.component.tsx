@@ -4,20 +4,29 @@ import { useAppSelector } from '../../store/hooks';
 import { selectGenres } from '../../store/moviesSlice';
 
 import './sidebar.component.css';
-import { useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router';
 
 const Sidebar = () => {
-  const navigate = useNavigate()
   const genres = useAppSelector(selectGenres);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const clickHandler = async (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
 
     if (target.tagName.toLowerCase() === 'span' && target.dataset.index && genres) {
-        const index = parseInt(target.dataset.index);
-        const url = index === 0 ? '/titles?page=1' : `/titles?genre=${genres[index]}&page=1`;
+      const index = parseInt(target.dataset.index);
 
-        navigate(url);
+      const updatedParams = new URLSearchParams(searchParams);
+
+      if (index === 0) {
+        updatedParams.delete('genre'); // Popular = no specific genre
+      } else {
+        updatedParams.set('genre', genres[index]);
+      }
+      
+      updatedParams.set('page', '1');
+
+      setSearchParams(updatedParams);
     }
   };
 
