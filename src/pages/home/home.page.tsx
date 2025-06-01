@@ -1,5 +1,5 @@
 import { useEffect, type MouseEvent } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { selectGenreError, selectGenreStatus, selectMovieError, selectMovies, selectMovieStatus, selectNextPage, selectPageTitle, updatePageTitle } from '../../store/moviesSlice';
@@ -11,14 +11,15 @@ import Button from '../../components/button/button.component';
 import Feedback from '../../components/feedback.component';
 
 import './home.page.css';
+import Filters from '../../components/filters/filters.component';
 
 export default function Home() {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const searchQuery = searchParams.get('search');
   const genre = searchParams.get('genre') ?? 'Popular';
   const page = parseInt(searchParams.get('page') ?? '1');
+  const filter = searchParams.get('titleType');
 
   const dispatch = useAppDispatch();
   const movies = useAppSelector(selectMovies);
@@ -36,10 +37,10 @@ export default function Home() {
   const onPageChange = (e: MouseEvent<HTMLButtonElement>) => {
     const direction = e.currentTarget.dataset.direction;
     const nextPage = direction === 'next' ? (next?.length ? page + 1 : page) : Math.max(1, page - 1);
+    
     const newParams = new URLSearchParams(searchParams);
     newParams.set('page', nextPage.toString());
-
-    navigate(`/titles?${newParams.toString()}`);
+    setSearchParams(newParams);
   };
 
   // Fetch genres once
@@ -54,6 +55,10 @@ export default function Home() {
     if (searchQuery) {
       url = `/titles/search/title/${searchQuery}?exact=false&titleType=movie&page=${page}`;
       dispatch(updatePageTitle(`Search results for "${searchQuery}"`));
+    }else if(filter) {
+      url = `/titles?titleType=${filter}&page=${page}`;
+      const title = filter === 'movie' ? 'Movies' : 'Series';
+      dispatch(updatePageTitle(title));
     } else if (genre === 'Popular') {
       url = `/titles?page=${page}`;
       dispatch(updatePageTitle('Popular'));
@@ -63,7 +68,7 @@ export default function Home() {
     }
 
     dispatch(fetchMovies(url));
-  }, [searchQuery, genre, page, dispatch]);
+  }, [searchQuery, genre, page, filter, dispatch]);
 
   console.log(movies);
 
@@ -78,6 +83,7 @@ export default function Home() {
         <section className="movies-grid-section">
           <div className='movie-grid-header'>
             <h1>{pageTitle}</h1>
+            <Filters />
           </div>
           <div className="movies-grid">
             {

@@ -26,6 +26,9 @@
     width: 100%;
     padding-top: 5px;
     padding-left: 2rem;
+    padding-right: 2rem;
+    display: flex;
+    justify-content: space-between;
 }
 
 .movie-grid-header h1 {

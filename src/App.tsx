@@ -13,7 +13,6 @@ export default function App() {
       <Routes>
         <Route path='/' element={<Container />}>
           <Route index element={<Home />} />
-          <Route path='titles/*' element={<Home />} />
           <Route path='movie/:id' element={<Movie />} />
           <Route path='watchlist' element={<WatchList />} />
         </Route>
