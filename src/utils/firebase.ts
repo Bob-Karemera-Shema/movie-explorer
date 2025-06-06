@@ -25,23 +25,28 @@ const root = "reviews";
 const review_subcollection = "items";
 
 
-
 // Function to fetch all reviews for a given movie once
 export const fetchReviews = async (movieId: string): Promise<Review[]> => {
   const reviewsRef = collection(db, root, movieId, review_subcollection);
   const q = query(reviewsRef, orderBy("createdAt", "desc"));
-  const snapshot: QuerySnapshot = await getDocs(q);
 
-  return snapshot.docs.map((docSnap: QueryDocumentSnapshot) => {
-    const data = docSnap.data();
-    return {
-      id: docSnap.id,
-      name: data.name as string,
-      rating: data.rating as number,
-      comment: data.comment as string,
-      createdAt: data.createdAt.toDate() as Date,
-    }
-  });
+  try {
+    const snapshot: QuerySnapshot = await getDocs(q);
+
+    return snapshot.docs.map((docSnap: QueryDocumentSnapshot) => {
+      const data = docSnap.data();
+      return {
+        id: docSnap.id,
+        name: data.name as string,
+        rating: data.rating as number,
+        comment: data.comment as string,
+        createdAt: data.createdAt.toDate() as Date,
+      }
+    });
+  } catch(err) {
+    console.error('Error fetching document: ', err);
+    throw err;
+  }
 }
 
 // Function to add a review document to the reviews database
@@ -55,5 +60,6 @@ export const addReview = async (movieId: string, review: Omit<Review, "id" | "cr
     })
   } catch (err) {
     console.error("Error adding document: ", err);
+    throw err;
   }
 };

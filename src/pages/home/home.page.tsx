@@ -2,7 +2,7 @@ import { useEffect, type MouseEvent } from 'react';
 import { useSearchParams } from 'react-router';
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { selectGenreError, selectGenreStatus, selectMovieError, selectMovies, selectMovieStatus, selectNextPage, selectPageTitle, updatePageTitle } from '../../store/moviesSlice';
+import { selectGenreError, selectGenreStatus, selectMovieError, selectMovies, selectMovieStatus, selectNextPage, selectPageTitle, updatePageTitle } from '../../store/movies/moviesSlice';
 import { fetchGenres, fetchMovies } from '../../store/movies/thunks';
 
 import Sidebar from '../../components/sidebar/sidebar.component';

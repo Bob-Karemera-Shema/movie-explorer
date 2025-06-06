@@ -1,7 +1,9 @@
 .movie-page {
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     padding: 2rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
 .movie-section {
@@ -11,7 +13,7 @@
 
 .movie-section .movie-image-container {
     width: 300px;
-    height: 500px;
+    height: 400px;
 }
 
 .movie-section .movie-image-container img {

@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { Review } from "../../utils/types";
 import { loadReviewsForMovie, submitReview } from "./thunks";
+
+import type { Review } from "../../utils/types";
+import type { RootState } from "../store";
 
 interface ReviewsState {
     reviews: Record<string, Review[]>;
@@ -39,7 +41,7 @@ const reviewsSlice = createSlice({
             })
             .addCase(submitReview.fulfilled, (state, action) => {
                 const { movieId, review } = action.payload;
-                if(!state.reviews[movieId]) {
+                if (!state.reviews[movieId]) {
                     state.reviews[movieId] = [review];
                 } else {
                     // newest reviews first
@@ -54,4 +56,11 @@ const reviewsSlice = createSlice({
     }
 });
 
+// Export reviews reducer
 export default reviewsSlice.reducer;
+
+// Export reviews status
+export const selectReviewsStatus = (state: RootState) => state.reviews.status;
+
+// Export reviews error
+export const selectReviewsError = (state: RootState) => state.reviews.error;

@@ -94,8 +94,6 @@ export const selectPageTitle = (state: RootState) => state.movies.pageTitle;
 // Export movie selectors
 export const selectMovies = (state: RootState) => state.movies.apiMovieResponse?.results;
 
-export const selectMovieById = (state: RootState, id: string) => state.movies.apiMovieResponse?.results.find(movie => movie.id === id);
-
 export const selectMovieStatus = (state: RootState) => state.movies.movieStatus;
 
 export const selectMovieError = (state: RootState) => state.movies.movieError;
