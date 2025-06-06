@@ -5,7 +5,7 @@
 }
 
 .movie-card:hover .movie-image-container {
-    border-color: var(--white);
+    border-color: var(--card-color);
 }
 
 .movie-card:hover .movie-image {
@@ -37,6 +37,7 @@
     font-size: 0.875rem;
     font-weight: 500;
     line-height: 1.25rem;
+    color: var(--secondary-color);
 }
 
 .movie-extra-details {

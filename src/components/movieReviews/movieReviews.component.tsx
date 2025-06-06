@@ -45,7 +45,7 @@ export default function MovieReviews({ movieId }: MovieReviewsProps) {
             <div className="movie-reviews-container">
                 {
                     reviews && (
-                        reviews.length === 0 ? (<p className="">No reviews yet.</p>) : (
+                        reviews.length === 0 ? (<p className="no-reviews">No reviews yet.</p>) : (
                             reviews.map(review => (
                                 <div key={review.id} className="movie-review">
                                     <h3 className="reviewer">{review.name}</h3>

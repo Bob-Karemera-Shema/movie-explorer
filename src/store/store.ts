@@ -5,18 +5,20 @@ import storage from 'redux-persist/lib/storage';
 import moviesReducer from './movies/moviesSlice';
 import watchlistReducer from './watchlistSlice';
 import reviewsReducer from './reviews/reviewsSlice';
+import themeReducer from './themeSlice';
 
 const rootReducer = combineReducers({
     movies: moviesReducer,
     watchlist: watchlistReducer,
-    reviews: reviewsReducer
+    reviews: reviewsReducer,
+    theme: themeReducer
 });
 
 // whitelist watchlist
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['watchlist']
+    whitelist: ['watchlist', 'theme']
 };
 
 // Persist reducers
