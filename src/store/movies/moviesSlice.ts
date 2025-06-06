@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import type { RootState } from "./store";
-import type { IMovie, IMoviesApiResponse } from "../utils/types";
+import type { RootState } from "../store";
+import type { IMovie, IMoviesApiResponse } from "../../utils/types";
 import { fetchGenres, fetchMovieById, fetchMovies } from "./thunks";
 
 interface MovieState {

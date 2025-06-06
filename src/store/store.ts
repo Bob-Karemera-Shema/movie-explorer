@@ -2,12 +2,14 @@ import { combineReducers, configureStore, type Action, type ThunkAction } from "
 import { persistReducer, persistStore } from "redux-persist";
 import storage from 'redux-persist/lib/storage';
 
-import moviesReducer from './moviesSlice';
+import moviesReducer from './movies/moviesSlice';
 import watchlistReducer from './watchlistSlice';
+import reviewsReducer from './reviews/reviewsSlice';
 
 const rootReducer = combineReducers({
     movies: moviesReducer,
-    watchlist: watchlistReducer
+    watchlist: watchlistReducer,
+    reviews: reviewsReducer
 });
 
 // whitelist watchlist

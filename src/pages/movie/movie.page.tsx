@@ -4,8 +4,8 @@ import { useParams } from 'react-router';
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { addMovieToList, isMovieInWatchList, removeMovieFromList } from '../../store/watchlistSlice';
-import { selectSelectedMovie, selectSelectedMovieError, selectSelectedMovieStatus } from '../../store/moviesSlice';
-import { fetchMovieById } from '../../store/thunks';
+import { selectSelectedMovie, selectSelectedMovieError, selectSelectedMovieStatus } from '../../store/movies/moviesSlice';
+import { fetchMovieById } from '../../store/movies/thunks';
 
 import Button from '../../components/button/button.component';
 import Feedback from '../../components/feedback.component';

@@ -74,3 +74,11 @@ export interface IMovieContext {
   updateData: (newData: IMoviesApiResponse) => void;
   startLoadingState: () => void;
 }
+
+export interface Review {
+  id: string;
+  name: string;
+  rating: number;
+  comment: string;
+  createdAt: Date;
+}
