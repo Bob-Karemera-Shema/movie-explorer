@@ -1,10 +1,11 @@
+import React from 'react';
 import { useState, type FormEvent } from 'react';
+import { useSearchParams } from 'react-router';
 
 import { IoIosSearch } from "react-icons/io";
 import Button from '../button/button.component';
 
 import './searchbar.component.css';
-import { useSearchParams } from 'react-router';
 
 const Searchbar = () => {
   const [searchParams, setSearchParams] = useSearchParams();

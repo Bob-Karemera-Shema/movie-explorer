@@ -1,4 +1,4 @@
-// components/feedback/Feedback.tsx
+import React from 'react';
 import Spinner from './spinner/spinner.component';
 
 type FeedbackProps = {

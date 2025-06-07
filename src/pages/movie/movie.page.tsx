@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect } from 'react';
 import { useParams } from 'react-router';
 
@@ -6,16 +7,16 @@ import type { SyntheticEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { addMovieToList, isMovieInWatchList, removeMovieFromList } from '../../store/watchlistSlice';
 import { selectSelectedMovie, selectSelectedMovieError, selectSelectedMovieStatus } from '../../store/movies/moviesSlice';
+import { selectReviewsError, selectReviewsStatus } from '../../store/reviews/reviewsSlice';
 import { fetchMovieById } from '../../store/movies/thunks';
 
 import Button from '../../components/button/button.component';
 import Feedback from '../../components/feedback.component';
+import MovieReviews from '../../components/movieReviews/movieReviews.component';
 
 import placeholder from '../../assets/placeholder.jpg';
 
 import './movie.page.css';
-import MovieReviews from '../../components/movieReviews/movieReviews.component';
-import { selectReviewsError, selectReviewsStatus } from '../../store/reviews/reviewsSlice';
 
 export default function Movie() {
   const { id } = useParams();
