@@ -1,6 +1,6 @@
-import customFetch from "../utils/customFetch";
-import type { IGenreApiResponse, IMovie, IMoviesApiResponse, IRatingApiResponse, ITitleIdApiResponse } from "../utils/types";
-import { createAppAsyncThunk } from "./withTypes";
+import customFetch from "../../utils/customFetch";
+import type { IGenreApiResponse, IMovie, IMoviesApiResponse, IRatingApiResponse, ITitleIdApiResponse } from "../../utils/types";
+import { createAppAsyncThunk } from "../withTypes";
 
 async function addRatingsToMovies(movies: IMovie[]): Promise<IMovie[]> {
     return Promise.all(
@@ -18,7 +18,7 @@ async function addRatingsToMovies(movies: IMovie[]): Promise<IMovie[]> {
     );
 }
 
-export const fetchMovies = createAppAsyncThunk<IMoviesApiResponse, string>(
+export const fetchMovies = createAppAsyncThunk<IMoviesApiResponse, string, { rejectValue: string }>(
     'movies/fetchMovies',
     async (endpoint, thunkAPI) => {
         try {
@@ -32,7 +32,7 @@ export const fetchMovies = createAppAsyncThunk<IMoviesApiResponse, string>(
     }
 );
 
-export const fetchMovieById = createAppAsyncThunk<IMovie, string>(
+export const fetchMovieById = createAppAsyncThunk<IMovie, string, { rejectValue: string }>(
     'movies/fetchMovieById',
     async (id, thunkAPI) => {
         try {
@@ -49,7 +49,7 @@ export const fetchMovieById = createAppAsyncThunk<IMovie, string>(
     }
 );
 
-export const fetchGenres = createAppAsyncThunk<string[], string>(
+export const fetchGenres = createAppAsyncThunk<string[], string, { rejectValue: string }>(
     'movies/fetchGenres',
     async (endpoint, thunkAPI) => {
         try {

@@ -1,7 +1,7 @@
 import type React from 'react';
 
 import { useAppSelector } from '../../store/hooks';
-import { selectGenres } from '../../store/moviesSlice';
+import { selectGenres } from '../../store/movies/moviesSlice';
 
 import './sidebar.component.css';
 import { useSearchParams } from 'react-router';
