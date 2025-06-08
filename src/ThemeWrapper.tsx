@@ -6,7 +6,7 @@ const ThemeWrapper = ({ children }: { children: React.ReactNode}) => {
     const mode = useAppSelector(selectTheme);
 
     return (
-        <div data-theme={mode} id="theme-root">
+        <div data-theme={mode} data-testid="theme-root" id="theme-root">
             {children}
         </div>
     )

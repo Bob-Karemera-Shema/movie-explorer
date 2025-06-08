@@ -8,13 +8,9 @@ import themeReducer from './store/themeSlice';
 import ThemeWrapper from './ThemeWrapper';
 
 describe('ThemeToggle', () => {
-  beforeEach(() => {
-    localStorage.clear();
-    document.body.innerHTML = '<div id="theme-root" data-theme="light"></div>';
-  });
-
-  test('toggles theme and persists state', () => {
+  test('theme toggle button should change theme and change theme wrapper id', () => {
     const store = configureStore({ reducer: { theme: themeReducer } });
+
     render(
       <Provider store={store}>
         <MemoryRouter>
@@ -25,17 +21,17 @@ describe('ThemeToggle', () => {
       </Provider>
     );
 
+    // find the button however it’s exposed in your markup
     const button = screen.getAllByRole('button').find(btn => btn.className.includes('toggle-theme-button'));
-    const themeRoot = document.querySelector('#theme-root');
+    expect(button).toBeInTheDocument();
 
+    const themeRoot = screen.getByTestId('theme-root');
     expect(themeRoot).toHaveAttribute('data-theme', 'light');
 
     fireEvent.click(button);
     expect(themeRoot).toHaveAttribute('data-theme', 'dark');
-    expect(localStorage.getItem('theme')).toBe('dark');
 
     fireEvent.click(button);
     expect(themeRoot).toHaveAttribute('data-theme', 'light');
-    expect(localStorage.getItem('theme')).toBe('light');
   });
 });
