@@ -51,7 +51,7 @@ export default function Movie() {
   };
 
   return (
-    <main className='movie-page'>
+    <main className='movie-page' data-testid="movie-page">
       <Feedback
         isLoading={movieStatus === 'pending' || reviewsStatus === 'pending'}
         errors={[movieError, reviewsError].filter((error) => error !== null)}
@@ -59,29 +59,29 @@ export default function Movie() {
       {
         (movieStatus === 'idle' && !movieError && movie && id) && (
           <>
-            <section className='movie-section'>
+            <section className='movie-section' data-testid="movie-details">
               <article className='movie-image-container'>
-                <img src={movie.primaryImage?.url || placeholder} onError={handleImageError} alt={movie.originalTitleText.text} />
+                <img data-testid="movie-poster" src={movie.primaryImage?.url || placeholder} onError={handleImageError} alt={movie.originalTitleText.text} />
               </article>
               <article className='movie-details-container'>
-                <h1>{movie.originalTitleText.text}</h1>
-                <p>{movie.releaseYear.year}</p>
+                <h1 data-testid="movie-title">{movie.originalTitleText.text}</h1>
+                <p data-testid="movie-year">{movie.releaseYear.year}</p>
                 {
                   movie?.rating && (
-                    <div className='movie-rating-container'>
+                    <div className='movie-rating-container' data-testid="movie-rating">
                       <span>Rating: {movie.rating.averageRating}</span>
                       <span>Votes: {movie.rating.numVotes}</span>
                     </div>
                   )
                 }
-                <p>{movie.titleType.isSeries ? 'Series' : 'Movie'}</p>
+                <p data-testid="movie-type">{movie.titleType.isSeries ? 'Series' : 'Movie'}</p>
                 {
                   inWatchList ? (
-                    <Button className='primary-button' onClick={removeFromList}>
+                    <Button className='primary-button' onClick={removeFromList} data-testid="remove-watchlist">
                       Remove from WatchList
                     </Button>
                   ) : (
-                    <Button className='primary-button' onClick={addToList}>
+                    <Button className='primary-button' onClick={addToList} data-testid="add-watchlist">
                       Add to WatchList
                     </Button>
                   )

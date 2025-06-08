@@ -1,130 +1,189 @@
-// import React from 'react';
-// import { render, screen, waitFor } from '@testing-library/react';
-// import { Provider } from 'react-redux';
-// import { configureStore } from '@reduxjs/toolkit';
-// import { MemoryRouter, Routes, Route } from 'react-router';
+import React from 'react';
+import { act, render, screen } from '@testing-library/react';
+import { MemoryRouter, Route, Routes } from 'react-router';
+import { Provider } from 'react-redux';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
-// import { customFetch } from '../../utils/customFetch';
+import customFetch from '../../utils/customFetch';
+import { fetchReviews, addReview } from '../../utils/firebase';
 
-// import reviewsReducer from '../../store/reviews/reviewsSlice';
-// import watchlistReducer from '../../store/watchlistSlice';
-// import moviesReducer from '../../store/movies/moviesSlice';
+import moviesReducer from '../../store/movies/moviesSlice';
+import reviewsReducer from '../../store/reviews/reviewsSlice';
+import watchlistReducer from '../../store/watchlistSlice';
+import Movie from './movie.page';
 
-// import Movie from '../movie/movie.page';
+jest.mock('../../utils/customFetch', () => ({
+    __esModule: true,
+    default: jest.fn(),
+}));
 
-// jest.mock('../../utils/firebase.ts', () => ({
-//   addReview: jest.fn(() => Promise.resolve()),
-//   fetchReviews: jest.fn(() => Promise.resolve([]))
-// }));
+jest.mock('../../utils/firebase', () => ({
+    __esModule: true,
+    fetchReviews: jest.fn(),
+    addReview: jest.fn(),
+}));
 
-// jest.mock('../../utils/customFetch.ts', () => ({
-//   customFetch: jest.fn()
-// }));
+async function renderWithState(preloadedState) {
+    const store = configureStore({
+        reducer: combineReducers({
+            movies: moviesReducer,
+            reviews: reviewsReducer,
+            watchlist: watchlistReducer,
+        }),
+        preloadedState,
+    });
 
-// describe('Movie Page', () => {
-//   const movieId = 'tt1234567';
+    let results;
+    await act(async () => {
+        results = render(
+            <Provider store={store}>
+                <MemoryRouter initialEntries={['/movie/123']}>
+                    <Routes>
+                        <Route path="/movie/:id" element={<Movie />} />
+                    </Routes>
+                </MemoryRouter>
+            </Provider>
+        );
+    });
+    return { store, ...results };
+}
 
-//   const renderMoviePage = async (preloadedState = {}) => {
-//     const store = configureStore({
-//       reducer: {
-//         movies: moviesReducer,
-//         reviews: reviewsReducer,
-//         watchlist: watchlistReducer,
-//       },
-//       preloadedState
-//     });
+beforeEach(() => {
+    jest.clearAllMocks();
+    fetchReviews.mockResolvedValueOnce([]);
+    addReview.mockResolvedValueOnce({});
+});
 
-//     await act(async () => {
-//       render(
-//         <Provider store={store}>
-//           <MemoryRouter initialEntries={[`/movies/${movieId}`]}>
-//             <Routes>
-//               <Route path="/movies/:id" element={<Movie />} />
-//             </Routes>
-//           </MemoryRouter>
-//         </Provider>
-//       );
-//     });
-//   };
+describe('MovieDetail page', () => {
+    it('shows loading spinner when movie is pending', async () => {
+        // Make customFetch never resolve to simulate "pending"
+        customFetch.mockImplementation(() => new Promise(() => { }));
 
-//   test('displays movie data and WatchList button', async () => {
-//     const movieId = 'tt1234567';
-//     const preloadedState = {
-//       movies: {
-//         selectedMovieStatus: 'idle',
-//         selectedMovie: {
-//           id: movieId,
-//           originalTitleText: { text: 'Test Movie' },
-//           releaseYear: { year: 2024 },
-//           titleType: { isSeries: false },
-//           rating: { averageRating: 8.5, numVotes: 10000 },
-//         },
-//         selectedMovieError: null,
-//       },
-//       reviews: { reviews: {}, status: 'idle', error: null },
-//       watchlist: { toWatch: [] }
-//     };
+        await renderWithState({
+            movies: {
+                selectedMovieStatus: 'pending',
+                selectedMovie: null,
+                selectedMovieError: null,
+            },
+            reviews: {
+                reviews: {},
+                status: 'idle',
+                error: null,
+            },
+            watchlist: { toWatch: [] },
+        });
 
-//     renderMoviePage(movieId, preloadedState);
+        expect(screen.getByTestId('loading-container')).toBeInTheDocument();
+    });
 
-//     expect(await screen.findByText('Test Movie')).toBeInTheDocument();
-//     expect(screen.getByText('Add to WatchList')).toBeInTheDocument();
-//   });
+    it('shows loading spinner when reviews are pending', async () => {
+        // Prevent movie fetch from resolving immediately
+        customFetch.mockImplementation(() => new Promise(() => { }));
 
-//   test('shows loading state', () => {
-//     const movieId = 'tt1234567';
-//     const preloadedState = {
-//       movies: {
-//         selectedMovieStatus: 'pending',
-//         selectedMovie: null,
-//         selectedMovieError: null,
-//       },
-//       reviews: { reviews: {}, status: 'pending', error: null },
-//       watchlist: { toWatch: [] }
-//     };
+        await renderWithState({
+            movies: {
+                selectedMovieStatus: 'idle',
+                selectedMovie: null,
+                selectedMovieError: null,
+            },
+            reviews: {
+                reviews: {},
+                status: 'pending',
+                error: null,
+            },
+            watchlist: { toWatch: [] },
+        });
 
-//     renderMoviePage(movieId, preloadedState);
+        // Spinner should appear because reviewsStatus==='pending'
+        expect(screen.getByTestId('loading-container')).toBeInTheDocument();
+    });
 
-//     expect(screen.getByText(/loading/i)).toBeInTheDocument();
-//   });
+    it('shows error messages when movieError exists', async () => {
+        customFetch.mockResolvedValueOnce({});
 
-//   test('shows error state', () => {
-//     const movieId = 'tt1234567';
-//     const preloadedState = {
-//       movies: {
-//         selectedMovieStatus: 'idle',
-//         selectedMovie: null,
-//         selectedMovieError: 'Failed to fetch movie',
-//       },
-//       reviews: { reviews: {}, status: 'idle', error: 'Review fetch failed' },
-//       watchlist: { toWatch: [] }
-//     };
+        await renderWithState({
+            movies: {
+                selectedMovieStatus: 'idle',
+                selectedMovie: null,
+                selectedMovieError: 'Failed to get movie',
+            },
+            reviews: {
+                reviews: {},
+                status: 'idle',
+                error: null,
+            },
+            watchlist: { toWatch: [] },
+        });
 
-//     renderMoviePage(movieId, preloadedState);
+        expect(await screen.getByText('Failed to get movie')).toBeInTheDocument();
+    });
 
-//     expect(screen.getByText(/Failed to fetch movie/)).toBeInTheDocument();
-//     expect(screen.getByText(/Review fetch failed/)).toBeInTheDocument();
-//   });
+    it('shows error messages when reviewsError exists', async () => {
+        customFetch.mockResolvedValueOnce({});
 
-//   test('handles fetch failure from customFetch', async () => {
-//     const movieId = 'tt1234567';
+        await renderWithState({
+            movies: {
+                selectedMovieStatus: 'idle',
+                selectedMovie: null,
+                selectedMovieError: null,
+            },
+            reviews: {
+                reviews: {},
+                status: 'idle',
+                error: 'Failed to get reviews',
+            },
+            watchlist: { toWatch: [] },
+        });
 
-//     customFetch.mockRejectedValueOnce(new Error('API error'));
+        expect(await screen.getByText('Failed to get reviews')).toBeInTheDocument();
+    });
 
-//     const preloadedState = {
-//       movies: {
-//         selectedMovieStatus: 'idle',
-//         selectedMovie: null,
-//         selectedMovieError: null,
-//       },
-//       reviews: { reviews: {}, status: 'idle', error: null },
-//       watchlist: { toWatch: [] }
-//     };
+    it('renders movie data and ReviewList when loaded', async () => {
+        // 1st call => movie data
+        customFetch
+            .mockResolvedValueOnce({
+                results: {
+                    id: '123',
+                    originalTitleText: { text: 'My Test Movie' },
+                    releaseYear: { year: 2021 },
+                    primaryImage: { url: 'https://example.com/poster.jpg' },
+                    titleType: { isSeries: false },
+                },
+            })
+            // 2nd call => rating data
+            .mockResolvedValueOnce({
+                results: { averageRating: 8.5, numVotes: 2000 },
+            });
 
-//     renderMoviePage(movieId, preloadedState);
+        fetchReviews.mockResolvedValueOnce([
+            { id: 'r1', name: 'Bob', rating: 3, comment: 'First Review', createdAt: new Date() },
+            { id: 'r2', name: 'Will', rating: 5, comment: 'Second Review', createdAt: new Date() },
+        ]);
 
-//     await waitFor(() => {
-//       expect(screen.getByText(/API error/i)).toBeInTheDocument();
-//     });
-//   });
-// });
+        await renderWithState({
+            movies: {
+                selectedMovieStatus: 'idle',
+                selectedMovie: null,
+                selectedMovieError: null,
+            },
+            reviews: {
+                reviews: {},
+                status: 'idle',
+                error: null,
+            },
+            watchlist: { toWatch: [] },
+        });
+
+        // Wait for useEffect() → dispatch(fetchMovieById) → state update
+        expect(await screen.findByTestId('movie-title')).toHaveTextContent('My Test Movie');
+        expect(screen.getByTestId('movie-year')).toHaveTextContent('2021');
+        expect(screen.getByTestId('movie-poster')).toHaveAttribute(
+            'src',
+            'https://example.com/poster.jpg'
+        );
+        expect(screen.getByTestId('movie-rating')).toHaveTextContent('Rating: 8.5');
+        expect(screen.getByTestId('movie-type')).toHaveTextContent('Movie');
+        expect(screen.getByTestId('add-watchlist')).toBeInTheDocument();
+        expect(screen.getByTestId('mock-movie-reviews')).toBeInTheDocument();
+    });
+});

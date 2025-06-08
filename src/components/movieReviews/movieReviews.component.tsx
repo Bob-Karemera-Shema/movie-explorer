@@ -22,7 +22,7 @@ export default function MovieReviews({ movieId }: MovieReviewsProps) {
     }, [dispatch, movieId]);
 
     return (
-        <section className="movie-reviews-section">
+        <section className="movie-reviews-section" data-testid="mock-movie-reviews">
             <h2 className="movie-reviews-header">Reviews</h2>
             <div className="movie-reviews-container">
                 {

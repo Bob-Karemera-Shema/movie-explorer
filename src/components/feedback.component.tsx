@@ -9,7 +9,7 @@ type FeedbackProps = {
 export default function Feedback({ isLoading, errors }: FeedbackProps) {
   if (isLoading) {
     return (
-      <div className="feedback-container">
+      <div className="feedback-container" data-testid="loading-container">
         <Spinner />
       </div>
     );
@@ -17,12 +17,12 @@ export default function Feedback({ isLoading, errors }: FeedbackProps) {
 
   if (errors.length > 0) {
     return (
-      <div className="error-container">
+      <div className="error-container" data-testid="error-container">
         {errors.map((error, index) => (
           <p key={index}>{error}</p>
         ))}
       </div>
-    );
+    )
   }
 
   return null;

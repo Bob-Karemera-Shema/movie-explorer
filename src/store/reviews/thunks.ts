@@ -31,7 +31,7 @@ export const submitReview = createAsyncThunk<
         const { movieId, name, rating, comment } = payload;
         try {
             await addReview(movieId, { name, rating, comment });
-            // Re-fetch all reviews to get the new one (or you could rely on onSnapshot to pick it up)
+            // Re-fetch all reviews to get the new one
             const allReviews = await fetchReviews(movieId);
             const newest = allReviews[0];
             return { movieId, review: newest };

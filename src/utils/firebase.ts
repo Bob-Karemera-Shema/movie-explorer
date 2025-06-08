@@ -4,7 +4,6 @@ import { addDoc, collection, getDocs, getFirestore, orderBy, query, QuerySnapsho
 import type { QueryDocumentSnapshot } from "firebase/firestore";
 import type { Review } from "./types";
 
-// Web app's Firebase configuration
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_AUTH_DOMAIN,
@@ -23,7 +22,6 @@ const db = getFirestore(app);
 // Constant database path slugs
 const root = "reviews";
 const review_subcollection = "items";
-
 
 // Function to fetch all reviews for a given movie once
 export const fetchReviews = async (movieId: string): Promise<Review[]> => {
