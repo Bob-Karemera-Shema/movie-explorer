@@ -1,14 +1,18 @@
+import React from 'react';
 import { useEffect } from 'react';
-import type { SyntheticEvent } from 'react';
 import { useParams } from 'react-router';
+
+import type { SyntheticEvent } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { addMovieToList, isMovieInWatchList, removeMovieFromList } from '../../store/watchlistSlice';
-import { selectSelectedMovie, selectSelectedMovieError, selectSelectedMovieStatus } from '../../store/moviesSlice';
-import { fetchMovieById } from '../../store/thunks';
+import { selectSelectedMovie, selectSelectedMovieError, selectSelectedMovieStatus } from '../../store/movies/moviesSlice';
+import { selectReviewsError, selectReviewsStatus } from '../../store/reviews/reviewsSlice';
+import { fetchMovieById } from '../../store/movies/thunks';
 
 import Button from '../../components/button/button.component';
 import Feedback from '../../components/feedback.component';
+import MovieReviews from '../../components/movieReviews/movieReviews.component';
 
 import placeholder from '../../assets/placeholder.jpg';
 
@@ -16,10 +20,16 @@ import './movie.page.css';
 
 export default function Movie() {
   const { id } = useParams();
+
   const dispatch = useAppDispatch();
   const movie = useAppSelector(selectSelectedMovie);
-  const status = useAppSelector(selectSelectedMovieStatus);
-  const error = useAppSelector(selectSelectedMovieError);
+
+  const movieStatus = useAppSelector(selectSelectedMovieStatus);
+  const movieError = useAppSelector(selectSelectedMovieError);
+
+  const reviewsStatus = useAppSelector(selectReviewsStatus);
+  const reviewsError = useAppSelector(selectReviewsError);
+
   const inWatchList = useAppSelector(id ? isMovieInWatchList(id) : () => false);
 
   const addToList = () => {
@@ -41,42 +51,45 @@ export default function Movie() {
   };
 
   return (
-    <main className='movie-page'>
+    <main className='movie-page' data-testid="movie-page">
       <Feedback
-        isLoading={status === 'pending'}
-        errors={[error].filter((error) => error !== null)}
+        isLoading={movieStatus === 'pending' || reviewsStatus === 'pending'}
+        errors={[movieError, reviewsError].filter((error) => error !== null)}
       />
       {
-        (status === 'idle' && !error && movie) && (
-          <section className='movie-section'>
-            <article className='movie-image-container'>
-              <img src={movie.primaryImage?.url || placeholder} onError={handleImageError} alt={movie.originalTitleText.text} />
-            </article>
-            <article className='movie-details-container'>
-              <h1>{movie.originalTitleText.text}</h1>
-              <p>{movie.releaseYear.year}</p>
-              {
-                movie?.rating && (
-                  <div className='movie-rating-container'>
-                    <span>Rating: {movie.rating.averageRating}</span>
-                    <span>Votes: {movie.rating.numVotes}</span>
-                  </div>
-                )
-              }
-              <p>{movie.titleType.isSeries ? 'Series' : 'Movie'}</p>
-              {
-                inWatchList ? (
-                  <Button className='primary-button' onClick={removeFromList}>
-                    Remove from WatchList
-                  </Button>
-                ) : (
-                  <Button className='primary-button' onClick={addToList}>
-                    Add to WatchList
-                  </Button>
-                )
-              }
-            </article>
-          </section>
+        (movieStatus === 'idle' && !movieError && movie && id) && (
+          <>
+            <section className='movie-section' data-testid="movie-details">
+              <article className='movie-image-container'>
+                <img data-testid="movie-poster" src={movie.primaryImage?.url || placeholder} onError={handleImageError} alt={movie.originalTitleText.text} />
+              </article>
+              <article className='movie-details-container'>
+                <h1 data-testid="movie-title">{movie.originalTitleText.text}</h1>
+                <p data-testid="movie-year">{movie.releaseYear.year}</p>
+                {
+                  movie?.rating && (
+                    <div className='movie-rating-container' data-testid="movie-rating">
+                      <span>Rating: {movie.rating.averageRating}</span>
+                      <span>Votes: {movie.rating.numVotes}</span>
+                    </div>
+                  )
+                }
+                <p data-testid="movie-type">{movie.titleType.isSeries ? 'Series' : 'Movie'}</p>
+                {
+                  inWatchList ? (
+                    <Button className='primary-button' onClick={removeFromList} data-testid="remove-watchlist">
+                      Remove from WatchList
+                    </Button>
+                  ) : (
+                    <Button className='primary-button' onClick={addToList} data-testid="add-watchlist">
+                      Add to WatchList
+                    </Button>
+                  )
+                }
+              </article>
+            </section>
+            <MovieReviews movieId={id} />
+          </>
         )
       }
     </main>

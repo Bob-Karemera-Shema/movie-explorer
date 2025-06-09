@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import type { RootState } from "./store";
-import type { IMovie, IMoviesApiResponse } from "../utils/types";
+import type { RootState } from "../store";
+import type { IMovie, IMoviesApiResponse } from "../../utils/types";
 import { fetchGenres, fetchMovieById, fetchMovies } from "./thunks";
 
 interface MovieState {
@@ -93,8 +93,6 @@ export const selectPageTitle = (state: RootState) => state.movies.pageTitle;
 
 // Export movie selectors
 export const selectMovies = (state: RootState) => state.movies.apiMovieResponse?.results;
-
-export const selectMovieById = (state: RootState, id: string) => state.movies.apiMovieResponse?.results.find(movie => movie.id === id);
 
 export const selectMovieStatus = (state: RootState) => state.movies.movieStatus;
 

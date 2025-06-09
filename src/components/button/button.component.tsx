@@ -1,3 +1,4 @@
+import React from 'react';
 import type { ButtonHTMLAttributes, PropsWithChildren } from 'react'
 import './button.component.css'
 

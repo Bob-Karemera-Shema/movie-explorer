@@ -1,5 +1,5 @@
 .sidebar {
-    background-color: var(--black);
+    background-color: var(--sidebar-color);
     padding: 32px;
     display: flex;
     flex-direction: column;
@@ -14,26 +14,26 @@
     border-bottom: 2px solid transparent;
     width: fit-content;
     text-transform: capitalize;
+    color: var(--secondary-color);
 }
 
 .filter:hover {
-    border-color: var(--white);
+    border-color: var(--secondary-color);
 }
 
 @media screen and (max-width: 840px) {
     .sidebar {
+        background-color: var(--dark-gray);
         flex-direction: row;
         width: 100vw;
         margin: 0 10px;
         overflow-y: unset;
         overflow-x: scroll;
-        background-color: transparent;
         gap: 10px;
     }
 
     .filter {
         background-color: var(--hover-color);
-        /* border: 1px solid var(--white); */
         border: none;
         border-radius: 9999px;
         display: flex;
