@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks"
 import { loadReviewsForMovie } from "../../store/reviews/thunks";
